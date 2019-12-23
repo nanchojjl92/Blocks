@@ -88,7 +88,7 @@ void GetUp();
 int RemovedBlock();
 void Save();
 int Road();
-void LastMent();
+void ShowLastMent();
 
 ///////////////////////////////////////////////////////////////////////////////
 int main()
@@ -161,7 +161,7 @@ int main()
 			score = score - nowSec*0.5;
 			setCursor(8, 31);
 			printf("Total Score: %.2f", score);
-			LastMent();
+			ShowLastMent();
 			setCursor(8, 32);
 			printf("Finish!! You're Great!!!");
 			repeat--;
@@ -382,64 +382,95 @@ int Play(int road)
 		{
 			int keynum;
 			keynum = _getch();
-			if (keynum == 77) //오른쪽
-			{
-				x += 2;
-				if (x == 52)
-					x -= 2;
-				else
+			if (keynum == 224){
+				keynum = _getch();
+				if (keynum == 77) //오른쪽
 				{
-					setCursor(x, y);
-					ShowShootingBlock(&shotBlock);
-					setCursor(x - 2, y);
-					printf("  ");
-				}
-			}
-			else if (keynum == 75) //왼쪽
-			{
-				x -= 2;
-				if (x == 4)
 					x += 2;
-				else
+					if (x == 52)
+						x -= 2;
+					else
+					{
+						setCursor(x, y);
+						ShowShootingBlock(&shotBlock);
+						setCursor(x - 2, y);
+						printf("  ");
+					}
+				}
+				else if (keynum == 75) //왼쪽
 				{
+					x -= 2;
+					if (x == 4)
+						x += 2;
+					else
+					{
+						setCursor(x, y);
+						ShowShootingBlock(&shotBlock);
+						setCursor(x + 2, y);
+						printf("  ");
+					}
+				}
+				else if (keynum == 72) //위 -> 발사
+				{
+					Shoot(x, &shotBlock);
+					setCursor(8, 28);
+					printf("Score: %.2f", score);
+					x = 28; y = 24;
+					shotBlock = rand() % blocklevel;
+
+					//화면에 제거된 블럭이 있는지 확인
+					removed[removeIndex] = RemovedBlock();
+					if (removed[removeIndex] != 7)
+						removeIndex++;
+					for (;;)
+					{
+						if (shotBlock == removed[0])
+							shotBlock = rand() % blocklevel;
+						else if (shotBlock == removed[1])
+							shotBlock = rand() % blocklevel;
+						else if (shotBlock == removed[2])
+							shotBlock = rand() % blocklevel;
+						else if (shotBlock == removed[3])
+							shotBlock = rand() % blocklevel;
+						else if (shotBlock == removed[4])
+							shotBlock = rand() % blocklevel;
+						else if (shotBlock == removed[5])
+							shotBlock = rand() % blocklevel;
+						else break;
+						if (removeIndex == blocklevel)
+							break;
+					}
+
+					//전부 지웠나?
+					for (int y = 23; y >= 7; y--)
+					{
+						for (int x = 3; x <= 25; x++)
+						{
+							if (map[y][x] == 0)
+								count++;
+						}
+					}
+					if (count == 391)
+					{
+						endnum = 1;
+						break;
+					}
+					else
+						count = 0;
+
+					//아래 닿았나?
+					for (int x = 3; x <= 25; x++)
+					{
+						if (map[23][x] != 0)
+						{
+							endnum = 3;
+							break;
+						}
+					}
+
 					setCursor(x, y);
 					ShowShootingBlock(&shotBlock);
-					setCursor(x + 2, y);
-					printf("  ");
 				}
-			}
-			else if (keynum == 72) //위 -> 발사
-			{
-				Shoot(x, &shotBlock);
-				setCursor(8, 28);
-				printf("Score: %.2f", score);
-				x = 28; y = 24;
-				shotBlock = rand() % blocklevel;
-
-				//화면에 제거된 블럭이 있는지 확인
-				removed[removeIndex] = RemovedBlock();
-				if (removed[removeIndex] != 7)
-					removeIndex++;
-				for (;;)
-				{
-					if (shotBlock == removed[0])
-						shotBlock = rand() % blocklevel;
-					else if (shotBlock == removed[1])
-						shotBlock = rand() % blocklevel;
-					else if (shotBlock == removed[2])
-						shotBlock = rand() % blocklevel;
-					else if (shotBlock == removed[3])
-						shotBlock = rand() % blocklevel;
-					else if (shotBlock == removed[4])
-						shotBlock = rand() % blocklevel;
-					else if (shotBlock == removed[5])
-						shotBlock = rand() % blocklevel;
-					else break;
-					if (removeIndex == blocklevel)
-						break;
-				}
-				setCursor(x, y);
-				ShowShootingBlock(&shotBlock);
 			}
 			else if (keynum == 115) //저장
 				endnum = 4;
@@ -451,36 +482,18 @@ int Play(int road)
 				endnum = 5;
 			}
 			else if (keynum == 112)	//p입력->줄 올라감
+			{
 				GetUp();
+				setCursor(x, y);
+				ShowShootingBlock(&shotBlock);
+			}
 			else if (keynum == 104)	//h입력->줄 내려감
+			{
 				GetDown();
-
-			//전부 지웠나?
-			for (int y = 23; y >= 7; y--)
-			{
-				for (int x = 3; x <= 25; x++)
-				{
-					if (map[y][x] == 0)
-						count++;
-				}
+				setCursor(x, y);
+				ShowShootingBlock(&shotBlock);
 			}
-			if (count == 391)
-			{
-				endnum = 1;
-				break;
-			}
-			else
-				count = 0;
-
-			//아래 닿았나?
-			for (int x = 3; x <= 25; x++)
-			{
-				if (map[23][x] != 0)
-				{
-					endnum = 3;
-					break;
-				}
-			}
+			//endnum 확인
 			if (endnum != 0)
 				break;
 		}//키누름이 있을 때 끝
@@ -495,7 +508,7 @@ int Play(int road)
 				setCursor(12, 29);
 				printf("%d", nowSec);
 			}
-			else if (GetTickCount() - lineStatTime >= 25000)
+			else if (GetTickCount() - lineStatTime >= 40000)
 			{
 				if (level >= 3)
 				{
@@ -725,39 +738,42 @@ int Road()
 	ShowBase(1);
 	return 1;
 }
-void LastMent()
+void ShowLastMent()
 {
-	setCursor(10, 14);
-	printf("		축하합니다!!");
+	setCursor(10, 15);
+	printf("           축하합니다!!");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("	  모든 레벨을 통과하셨군요!!");
+	setCursor(10, 15);
+	printf("     모든 레벨을 통과하셨군요!!");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("이런 속 터지는 게임을 끝까지 해내시다니");
+	setCursor(10, 15);
+	printf(" 이런 답답한 게임을 끝까지 해내시다니");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("	정말 대단한 근성입니다!	    ");
+	setCursor(10, 15);
+	printf("  당신은 무엇이든 해낼 사람이네요!   ");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("		근데요			    ");
+	setCursor(10, 15);
+	printf("         게임을 완수하셨으니      ");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("   이 게임에는 치트키가 있답니다.");
+	setCursor(10, 15);
+	printf("      한가지 팁을 드리겠습니다.");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("	 줄내림 치트키도 있고		");
+	setCursor(10, 15);
+	printf("     이 게임에는 치트키가 있답니다.");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("	 줄올림 치트키도 있고");
+	setCursor(10, 15);
+	printf("       줄내림 치트키(h)도 있고	   ");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("    레벨을 올리는 치트키도 있고");
+	setCursor(10, 15);
+	printf("       줄올림 치트키도(p) 있고");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf(" 한방에 엔딩으로 가는 치트키도 있어요.");
+	setCursor(10, 15);
+	printf("   레벨을 올리는 치트키(q)도 있고");
 	Sleep(2000);
-	setCursor(10, 14);
-	printf("        한 번 찾아보세요^^		");
+	setCursor(10, 15);
+	printf("한방에 엔딩으로 가는 치트키(e)도 있습니다.");
+	Sleep(2000);
+	setCursor(10, 15);
+	printf("    훨신 쉽게 Blocks를 즐겨보세요^^      ");
 	Sleep(2000);
 }
