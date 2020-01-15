@@ -102,20 +102,37 @@ int main()
 
 	ShowMap();	//장애물 설정 전
 	setCursor(20, 16);
-	printf("1. 불러오기");
+	printf("1. 불러오기");	//키 입력받을 시 49
 	setCursor(20, 17);
-	printf("2. 새 게임 시작");
-	setCursor(20, 18);
-	printf("What will you do? ");
-	scanf("%d", &choice);
-	switch (choice)
+	printf("2. 새 게임 시작");//키 입력받을 시 50
+	while (1)
 	{
-	case 1: road = 1; break;
-	case 2: road = 0;
+		setCursor(20, 18);
+		printf("What will you do? ");
+		choice = getchar();
+		if (choice == 49 | choice == 50)
+			break;
+		else
+		{
+			setCursor(20, 19);
+			printf("잘못된 입력입니다. 다시 입력.");
+			setCursor(38, 18);
+			printf("  ");
+			fflush(stdin);
+			continue;
+		}
+	}
+
+	switch ((int)choice)
+	{
+	case 49: road = 1; break;
+	case 50: road = 0;
 		system("cls");
 		ShowBase(0); //맵, 장애물 기타등등 출력 
 		break;
 	}
+
+	fflush(stdin);
 
 	while (repeat)
 	{
@@ -131,8 +148,8 @@ int main()
 			{
 				setCursor(8, 32);
 				printf("Next level?(Y-1/N-2) ");
-				scanf("%d", &choice);
-				if (choice == 1)
+				choice = getchar();
+				if (choice == 49)
 				{
 					level++;
 					if (level != 3)
@@ -140,18 +157,24 @@ int main()
 					road = 0;
 					system("cls");
 					ShowBase(0);
+					fflush(stdin);
 					break;
 				}
-				else if (choice == 2)
+				else if (choice == 50)
 				{
-					repeat--;
+					road = 0;
+					system("cls");
+					ShowBase(0);
+					fflush(stdin);
 					break;
 				}
 				else
 				{
-					setCursor(8, 32);
-					printf("잘못 입력했소.		");
-					Sleep(2000);
+					setCursor(8, 33);
+					printf("잘못된 입력입니다. 다시 입력.");
+					setCursor(28, 32);
+					printf("  ");
+					fflush(stdin);
 					continue;
 				}
 			}
@@ -175,25 +198,31 @@ int main()
 			{
 				setCursor(8, 32);
 				printf("Paly Again?(Y-1/N-2) ");
-				scanf("%d", &choice);
-				if (choice == 1)
+				choice = getchar();
+				if (choice == 49)
 				{
 					system("cls");
 					score = 0;
 					road = 0;
 					ShowBase(0);
+					fflush(stdin);
 					break;
 				}
-				else if (choice == 2)
+				else if (choice == 50)
 				{
-					repeat--;
+					road = 0;
+					system("cls");
+					ShowBase(0);
+					fflush(stdin);
 					break;
 				}
 				else
 				{
-					setCursor(8, 32);
-					printf("잘못 입력했소.		");
-					Sleep(2000);
+					setCursor(8, 33);
+					printf("잘못된 입력입니다. 다시 입력.");
+					setCursor(28, 32);
+					printf("  ");
+					fflush(stdin);
 					continue;
 				}
 			}
@@ -204,15 +233,18 @@ int main()
 			{
 				setCursor(30, 31);
 				printf("Save?(Y-1/N-2) ");
-				scanf("%d", &choice);
-				if (choice == 1)
+				choice = getchar();
+				if (choice == 49)
 				{
+					setCursor(30, 32);
+					printf("저장되었습니다.");
 					Save();
 					repeat--;
 					break;
 				}
-				else if (choice == 2)
+				else if (choice == 50)
 				{
+					fflush(stdin);
 					end = 0;
 					setCursor(30, 31);
 					printf(" S: 저장		  ");
@@ -221,9 +253,11 @@ int main()
 				}
 				else
 				{
-					setCursor(30, 31);
-					printf("잘못 입력했소.    ");
-					Sleep(2000);
+					setCursor(30, 32);
+					printf("다시 입력.");
+					setCursor(44, 31);
+					printf("  ");
+					fflush(stdin);
 					continue;
 				}
 			}
