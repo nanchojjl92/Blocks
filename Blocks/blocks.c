@@ -654,7 +654,7 @@ void GetDown()
 void GetUp()
 {
 	int i, j;
-	for (i = 8; i<22; i++)
+	for (i = 8; i<25; i++)
 	{
 		for (j = 3; j<26; j++)
 			map[i - 1][j] = map[i][j];
