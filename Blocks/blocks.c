@@ -229,38 +229,7 @@ int main()
 			break;
 			/////////////////////////
 		case 4:
-			while (1)
-			{
-				setCursor(30, 31);
-				printf("Save?(Y-1/N-2) ");
-				choice = getchar();
-				if (choice == 49)
-				{
-					setCursor(30, 32);
-					printf("저장되었습니다.");
-					Save();
-					repeat--;
-					break;
-				}
-				else if (choice == 50)
-				{
-					fflush(stdin);
-					end = 0;
-					setCursor(30, 31);
-					printf(" S: 저장		  ");
-					road = 0;
-					break;
-				}
-				else
-				{
-					setCursor(30, 32);
-					printf("다시 입력.");
-					setCursor(44, 31);
-					printf("  ");
-					fflush(stdin);
-					continue;
-				}
-			}
+			
 			break;
 		default: break;
 		} //switch 끝
@@ -507,7 +476,41 @@ int Play(int road)
 				}
 			}
 			else if (keynum == 115) //저장
-				endnum = 4;
+			{
+				setCursor(30, 31);
+				printf("Save?(Y-1/N-2) ");
+				while (1)
+				{
+					fflush(stdin);
+					setCursor(45, 31);
+					keynum = getchar();
+					if (keynum == 49)
+					{
+						setCursor(30, 32);
+						printf("저장되었습니다.");
+						Sleep(1000);
+						Save();
+						break;
+					}
+					else if (keynum == 50)
+					{
+						setCursor(30, 31);
+						printf(" S: 저장		  ");
+						setCursor(30, 32);
+						printf("            ");
+						fflush(stdin);
+						break;
+					}
+					else
+					{
+						setCursor(30, 32);
+						printf("다시 입력.");
+						setCursor(44, 31);
+						printf("  ");
+						continue;
+					}
+				}
+			}
 			else if (keynum == 101)	//e입력->엔딩
 				endnum = 2;
 			else if (keynum == 113)	//q입력->nextlevel
