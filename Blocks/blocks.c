@@ -118,7 +118,7 @@ int main()
 			printf("잘못된 입력입니다. 다시 입력.");
 			setCursor(38, 18);
 			printf("  ");
-			fflush(stdin);
+			getchar();
 			continue;
 		}
 	}
@@ -132,7 +132,7 @@ int main()
 		break;
 	}
 
-	fflush(stdin);
+	getchar();
 
 	while (repeat)
 	{
@@ -165,7 +165,7 @@ int main()
 					road = 0;
 					system("cls");
 					ShowBase(0);
-					fflush(stdin);
+					getchar();
 					break;
 				}
 				else
@@ -174,7 +174,7 @@ int main()
 					printf("잘못된 입력입니다. 다시 입력.");
 					setCursor(28, 32);
 					printf("  ");
-					fflush(stdin);
+					getchar();
 					continue;
 				}
 			}
@@ -205,7 +205,7 @@ int main()
 					score = 0;
 					road = 0;
 					ShowBase(0);
-					fflush(stdin);
+					getchar();
 					break;
 				}
 				else if (choice == 50)
@@ -213,7 +213,7 @@ int main()
 					road = 0;
 					system("cls");
 					ShowBase(0);
-					fflush(stdin);
+					getchar();
 					break;
 				}
 				else
@@ -222,7 +222,7 @@ int main()
 					printf("잘못된 입력입니다. 다시 입력.");
 					setCursor(28, 32);
 					printf("  ");
-					fflush(stdin);
+					getchar();
 					continue;
 				}
 			}
@@ -481,7 +481,7 @@ int Play(int road)
 				printf("Save?(Y-1/N-2) ");
 				while (1)
 				{
-					fflush(stdin);
+					getchar();
 					setCursor(45, 31);
 					keynum = getchar();
 					if (keynum == 49)
@@ -498,7 +498,7 @@ int Play(int road)
 						printf(" S: 저장		  ");
 						setCursor(30, 32);
 						printf("            ");
-						fflush(stdin);
+						getchar();
 						break;
 					}
 					else
@@ -545,7 +545,7 @@ int Play(int road)
 				setCursor(12, 29);
 				printf("%d", nowSec);
 			}
-			else if (GetTickCount() - lineStatTime >= 40000)
+			else if (GetTickCount() - lineStatTime >= 60000)
 			{
 				if (level >= 3)
 				{
@@ -777,40 +777,37 @@ int Road()
 }
 void ShowLastMent()
 {
-	setCursor(10, 15);
-	printf("           축하합니다!!");
+	setCursor(6, 15);
+	printf("                축하합니다!!");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("     모든 레벨을 통과하셨군요!!");
+	setCursor(6, 15);
+	printf("     이런 답답한 게임을 끝까지 해내시다니");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf(" 이런 답답한 게임을 끝까지 해내시다니");
+	setCursor(6, 15);
+	printf("    당신은 무엇이든 해낼 사람이 분명하네요!");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("  당신은 무엇이든 해낼 사람이네요!   ");
+	setCursor(6, 15);
+	printf("             게임을 완수하셨으니           ");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("         게임을 완수하셨으니      ");
+	setCursor(6, 15);
+	printf("          한가지 팁을 드리겠습니다.");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("      한가지 팁을 드리겠습니다.");
+	setCursor(6, 15);
+	printf("       이 게임에는 치트키가 있습니다.");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("     이 게임에는 치트키가 있답니다.");
+	setCursor(6, 15);
+	printf("                줄내림 키(h)          ");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("       줄내림 치트키(h)도 있고	   ");
+	setCursor(6, 15);
+	printf("                줄올림 키(p)");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("       줄올림 치트키도(p) 있고");
+	setCursor(6, 15);
+	printf("            레벨을 올리는 키(q)");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("   레벨을 올리는 치트키(q)도 있고");
+	setCursor(6, 15);
+	printf("          바로 엔딩으로 가는 키(e)");
 	Sleep(2000);
-	setCursor(10, 15);
-	printf("한방에 엔딩으로 가는 치트키(e)도 있습니다.");
-	Sleep(2000);
-	setCursor(10, 15);
-	printf("    훨신 쉽게 Blocks를 즐겨보세요^^      ");
+	setCursor(6, 15);
+	printf("        훨신 쉽게 Blocks를 즐겨보세요^^");
 	Sleep(2000);
 }
